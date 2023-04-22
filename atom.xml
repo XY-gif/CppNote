@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://xy-gif.github.io</id>
+    <title>x</title>
+    <updated>2023-04-22T11:29:16.468Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://xy-gif.github.io"/>
+    <link rel="self" href="https://xy-gif.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://xy-gif.github.io/images/avatar.png</logo>
+    <icon>https://xy-gif.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2023, x</rights>
+    <entry>
+        <title type="html"><![CDATA[1.string]]></title>
+        <id>https://xy-gif.github.io/post/1string/</id>
+        <link href="https://xy-gif.github.io/post/1string/">
+        </link>
+        <updated>2023-04-22T10:58:11.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="1string">1.string</h1>
+<p><em>注：此处的string指的是std::string</em></p>
+<h2 id="一构造函数以及一些常用重载">（一）构造函数以及一些常用重载</h2>
+<table>
+<thead>
+<tr>
+<th>类成员函数名接口</th>
+<th>函数作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>string(const char* str)</code></td>
+<td>根据字符串常量地址创造字符串</td>
+</tr>
+<tr>
+<td><code>string(int num,char c)</code></td>
+<td>创造一个字符‘c’重复了num遍的字符串</td>
+</tr>
+<tr>
+<td><code>string(string str)</code></td>
+<td>根据另一个string拷贝</td>
+</tr>
+<tr>
+<td><code>string(const char* str,int length)</code></td>
+<td>截取字符串前length个字符作为新字符串</td>
+</tr>
+<tr>
+<td><code>string(const char* bengin,const char* end)</code></td>
+<td>截取字符串从begin开始到end不包括end，即[begin,end)</td>
+</tr>
+<tr>
+<td><code>string(const string &amp;str,int begin,int size)</code></td>
+<td>从begin处截取size个字符作为字符串</td>
+</tr>
+<tr>
+<td><code>string operator+(string &amp;str1,string &amp;str2)</code></td>
+<td>对运算符+进行重载，可以连接两个字符串</td>
+</tr>
+<tr>
+<td><code>string &amp;operator+=(const char *s)</code></td>
+<td>在原本字符串后面添加新的字符串</td>
+</tr>
+<tr>
+<td><code>string &amp;operator+=(const char c)</code></td>
+<td>与上类似</td>
+</tr>
+<tr>
+<td><code>string &amp;operator+=(const string &amp;s)</code></td>
+<td>与上类似</td>
+</tr>
+</tbody>
+</table>
+<h2 id="g的stdstringconst-char-str内容存放">g++的std::string(const char *str)内容存放</h2>
+<p>1.进入构造函数先测出str长度，<br>
+2.之后将长度等参数全部传入另一个函数，此处我们称为f1()<br>
+3.进入f1先检测一下str是否为空，为空报错。不为空就会在进入一个函数f2()，在f2()中会给str分配空间分配的空间在堆上。<br>
+5.之后把str内容复制到堆上。<br>
+<em>以上是根据g++反汇编的出的大致结论，不同编译器分配策略不同，例如有的编译器可能会当字符串短时在栈上分配，字符串长时在堆上分配。</em></p>
+<h2 id="getline函数">getline函数</h2>
+<table>
+<thead>
+<tr>
+<th>getline函数重载</th>
+<th>函数作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>istream&amp; getline (istream&amp; is, string&amp; str)</code></td>
+<td>这个重载形式从输入流中读取字符，直到遇到 EOF 或 '\n' 字符为止，并把读取到的字符存储到 str 中。</td>
+</tr>
+<tr>
+<td><code>istream&amp; getline (istream&amp; is, string&amp; str, char delim)</code></td>
+<td>这个重载形式在 istream 中查找 delim 字符，然后从字符位置开始从输入流中读取字符，直到EOF或者 delim 字符出现时停止。读取到的字符保存到字符串参数 str 中。</td>
+</tr>
+<tr>
+<td><em>注意此处的getline不是类成员函数，就是一般函数，当然在cin等中也存在同名方法</em></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="字符串搜索">字符串搜索</h2>
+<h3 id="子串搜索">子串搜索</h3>
+<table>
+<thead>
+<tr>
+<th>类成员函数接口</th>
+<th>函数作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>size_type find(const string &amp;str,size_type pos=0)const</code></td>
+<td>从字符串pos位置向后开始查找子串str，若找到返回子串首字符在本串中出现的位置，若没找到，返回string::npos</td>
+</tr>
+<tr>
+<td><code>size_type find(const char *str,size_type pos=0)const</code></td>
+<td>与上类似</td>
+</tr>
+<tr>
+<td><code>size_type find(const char *str,size_type pos=0,int n)const</code></td>
+<td>与上类似但只在前n个字符中查找</td>
+</tr>
+<tr>
+<td><code>size_type find(const char c,size_type pos=0)const</code></td>
+<td>与第一个类似，但只查找字符</td>
+</tr>
+<tr>
+<td><em>size_type 实际上就是unsigned int类型</em></td>
+<td></td>
+</tr>
+<tr>
+<td><em>string::npos大多数编译器将其定义为-1或者0xfffffffffffffffff，且其为公有成员变量可以直接访问</em></td>
+<td></td>
+</tr>
+<tr>
+<td><em>类成员函数声明末尾添加const，表示这个类成员函数不可以对类成员变量进行修改</em></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="其它搜索">其它搜索</h3>
+<table>
+<thead>
+<tr>
+<th>类成员函数接口</th>
+<th>函数作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>size_type rfind(str,size_type pos=npos)</code></td>
+<td>字符串从pos位置向前搜索，若找到返回子串首字符在本串中出现的位置，若没找到，返回string::npos</td>
+</tr>
+<tr>
+<td><code>size_type find_first_of(str,size_type pos=0)</code></td>
+<td>根据str这个字符串集合中的元素，找出第一个元素出现在本字符串中的位置，若没有返回npos</td>
+</tr>
+<tr>
+<td><code>size_type find_last_of(str,size_type pos=npos)</code></td>
+<td>根据str这个字符串集合中的元素，找出最后一个元素出现在本字符串中的位置，若没有返回npos</td>
+</tr>
+<tr>
+<td><code>size_type find_first_not_of(str,size_type pos=0)</code></td>
+<td>根据str这个字符串集合中的元素，找出第一个不是str元素出现在本字符串中的位置，若没有返回npos</td>
+</tr>
+<tr>
+<td><code>size_type find_last_not_of(str,size_type pos=npos)</code></td>
+<td>根据str这个字符串集合中的元素，找出最后一个不是str元素出现在本字符串中的位置，若没有返回npos</td>
+</tr>
+</tbody>
+</table>
+<p><em>注意：pos是size_type类型也就是说npos是最大值0xfffffffffffffffff，也就是说默认从最后开始搜索</em></p>
+<h2 id="字符串大小和内存大小">字符串大小和内存大小</h2>
+<table>
+<thead>
+<tr>
+<th>类成员接口</th>
+<th>函数作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>size_t size()</code></td>
+<td>求字符串长度，也就是字符个数</td>
+</tr>
+<tr>
+<td><code>size_t length()</code></td>
+<td>同size()</td>
+</tr>
+<tr>
+<td><code>size_t capacity()</code></td>
+<td>返回对象中分配给字符串的内存大小</td>
+</tr>
+<tr>
+<td><code>void resize(size_t n)</code></td>
+<td>修改字符串长度，若n比原来的字符串长度大则原字符串后面增加'\0'，若n比原字符串长度小则截断原字符串</td>
+</tr>
+<tr>
+<td><code>void reserve(size_t n)</code></td>
+<td>修改给字符串分配的内存大小，若比原内存小则不操作，若比原内存大一般分配16*n-1的字节大小</td>
+</tr>
+<tr>
+<td><em>reserve 也不一定分配16*n-1的大小，例如在（编译器：g++ (tdm64-1) 4.9.2，环境win11）实验时发现reserve分配的内存正好是n，这可能和编译器行为有关</em></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="字符串种类">字符串种类</h2>
+<p>string是模板类basic_string模板参数实例化的类<br>
+basic_string类定义大致如下：</p>
+<pre><code class="language-cpp">template&lt;class charT,class char_traits&lt;charT&gt;,class Allocator = allocator&lt;charT&gt;&gt;
+basic_string{...};
+</code></pre>
+<p>由basic_string参数实例化后产生如下的string类型</p>
+<pre><code class="language-cpp">typedef basic_string&lt;char&gt; string;
+typedef basic_string&lt;wchar_t&gt; wstring;
+typedef basic_string&lt;char16_t&gt; u16string;    //C++11
+typedef basic_string&lt;char32_t&gt; u32string;    //C++11
+</code></pre>
+<h2 id="线程安全性">线程安全性</h2>
+<p><strong>std::string不是线程安全的</strong>，一般情况下STL的容器都不安全，这里提一嘴，之后再对线程安全性做详细学习。</p>
+<h1 id="函数接口总结">函数接口总结</h1>
+<table>
+<thead>
+<tr>
+<th>string类成员函数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>string(const char* str)</code></td>
+</tr>
+<tr>
+<td><code>string(int num,char c)</code></td>
+</tr>
+<tr>
+<td><code>string(string str)</code></td>
+</tr>
+<tr>
+<td><code>string(const char* str,int length)</code></td>
+</tr>
+<tr>
+<td><code>string(const char* bengin,const char* end)</code></td>
+</tr>
+<tr>
+<td><code>string(const string &amp;str,int begin,int end)</code></td>
+</tr>
+<tr>
+<td><code>string operator+(string &amp;str1,string &amp;str2)</code></td>
+</tr>
+<tr>
+<td><code>string &amp;operator+=(const char *s)</code></td>
+</tr>
+<tr>
+<td><code>string &amp;operator+=(const char c)</code></td>
+</tr>
+<tr>
+<td><code>string &amp;operator+=(const string &amp;s)</code></td>
+</tr>
+<tr>
+<td><code>size_type find(const string &amp;str,size_type pos=0)const</code></td>
+</tr>
+<tr>
+<td><code>size_type find(const char *str,size_type pos=0)const</code></td>
+</tr>
+<tr>
+<td><code>size_type find(const char *str,size_type pos=0,int n)const</code></td>
+</tr>
+<tr>
+<td><code>size_type find(const char c,size_type pos=0)const</code></td>
+</tr>
+<tr>
+<td><code>size_type rfind(str,size_type pos=npos)</code></td>
+</tr>
+<tr>
+<td><code>size_type find_first_of(str,size_type pos=0)</code></td>
+</tr>
+<tr>
+<td><code>size_type find_last_of(str,size_type pos=npos)</code></td>
+</tr>
+<tr>
+<td><code>size_type find_first_not_of(str,size_type pos=0)</code></td>
+</tr>
+<tr>
+<td><code>size_type find_last_not_of(str,size_type pos=npos)</code></td>
+</tr>
+<tr>
+<td><code>size_t size()</code></td>
+</tr>
+<tr>
+<td><code>size_t length()</code></td>
+</tr>
+<tr>
+<td><code>size_t capacity()</code></td>
+</tr>
+<tr>
+<td><code>void resize(size_t n)</code></td>
+</tr>
+<tr>
+<td><code>void reserve(size_t n)</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>getline函数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>istream&amp; getline (istream&amp; is, string&amp; str)</code></td>
+</tr>
+<tr>
+<td><code>istream&amp; getline (istream&amp; is, string&amp; str, char delim)</code></td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hello Gridea]]></title>
+        <id>https://xy-gif.github.io/post/hello-gridea/</id>
+        <link href="https://xy-gif.github.io/post/hello-gridea/">
+        </link>
+        <updated>2018-12-11T16:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+<!-- more -->
+<p><a href="https://github.com/getgridea/gridea">Github</a><br>
+<a href="https://gridea.dev/">Gridea 主页</a><br>
+<a href="https://fehey.com/">示例网站</a></p>
+<h2 id="特性">特性👇</h2>
+<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
+<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
+<p>🏷️  你可以对文章进行标签分组</p>
+<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
+<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
+<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
+<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
+<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
+<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
+<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
+<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
+<p>未来，它一定会成为你离不开的伙伴</p>
+<p>尽情发挥你的才华吧！</p>
+<p>😘 Enjoy~</p>
+]]></content>
+    </entry>
+</feed>
